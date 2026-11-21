@@ -60,8 +60,7 @@ export function run(input) {
         return;
       }
       DELIM.lastIndex = pos;
-      const m = DELIM.exec(text);
-      if (m === null) {
+      if (!DELIM.test(text)) {
         value += text.slice(pos);
         added += len - pos;
         pos = len;
@@ -70,7 +69,8 @@ export function run(input) {
         fAdded = added;
         return;
       }
-      const end = m.index;
+      // The match is one character, so its index is lastIndex - 1 (test() builds no match array).
+      const end = DELIM.lastIndex - 1;
       const c = text.charCodeAt(end);
       if (c === 13) { // '\r'
         if (text.charCodeAt(end + 1) === 10) {
